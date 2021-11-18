@@ -3,7 +3,7 @@ package com.moritz.musicsyncapp.model.playlist.providers;
 import com.moritz.musicsyncapp.model.playlist.IPlaylist;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LocalPlaylistProviderTest {
 
