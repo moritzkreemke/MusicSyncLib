@@ -8,6 +8,13 @@ version '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
+allprojects {
+    tasks.withType(JavaCompile) {
+        sourceCompatibility = '1.11'
+        targetCompatibility = '1.11'
+    }
+}
+
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
