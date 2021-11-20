@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="musicsynclib:jar">
-    <output-path>$USER_HOME$/AndroidStudioProjects/MusicSyncApp/MusicSyncAndroid/libs</output-path>
+  <artifact type="jar" build-on-make="true" name="musicsynclib:jar2">
+    <output-path>$USER_HOME$/AndroidStudioProjects/MusicSyncApp/app/libs</output-path>
     <root id="archive" name="musicsynclib.jar">
       <element id="module-output" name="musicsynclib.main" />
     </root>

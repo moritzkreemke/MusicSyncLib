@@ -9,5 +9,6 @@ public interface IPlaylist {
     ITrack[] getTracks();
 
     void addTrack(ITrack track);
+    void setTracks(ITrack[] tracks, boolean append);
 
 }

@@ -4,7 +4,7 @@ import com.moritz.musicsyncapp.model.playlist.IPlaylist;
 
 public interface IPlaylistProvider {
 
-    EProviderTypes getName ();
+    String getName ();
     IPlaylist[] getAllPlaylists();
 
 }

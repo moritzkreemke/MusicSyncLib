@@ -3,6 +3,7 @@ package com.moritz.musicsyncapp.model.playlist;
 import com.moritz.musicsyncapp.model.track.ITrack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 class LocalPlaylistImpl implements IPlaylist {
@@ -35,6 +36,17 @@ class LocalPlaylistImpl implements IPlaylist {
     @Override
     public void addTrack(ITrack track) {
 
+    }
+
+    @Override
+    public void setTracks(ITrack[] tracks, boolean append) {
+        if(!append)
+            setTracks(List.of(tracks));
+        else {
+            for (ITrack track : tracks) {
+                addTrack(track);
+            }
+        }
     }
 
     void setTracks(List<ITrack> tracks) {
