@@ -1,10 +1,11 @@
 package com.moritz.musicsyncapp.controller.sound;
 
-import com.moritz.musicsyncapp.model.track.ITrack;
+import com.moritz.musicsyncapp.model.track.IPlayableTrack;
+
 
 public interface ISoundController {
 
-    void play(ITrack track);
+    void play(IPlayableTrack track);
     void stop();
 
 }

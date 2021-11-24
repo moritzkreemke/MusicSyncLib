@@ -1,24 +1,33 @@
 package com.moritz.musicsyncapp.model.track;
 
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
+import java.io.InputStream;
 
-public class LocalTrack implements ITrack{
+public class LocalTrack implements IPlayableTrack{
 
 
     private String name;
     private String artist;
     private String uri;
+    private int duration;
 
 
-    public LocalTrack(String name, String artist, String uri) {
+    public LocalTrack(String name, String artist, String uri, int duration) {
         this.name = name;
         this.artist = artist;
         this.uri = uri;
+        this.duration = duration;
+    }
+
+    public LocalTrack(String name, String artist, String uri) {
+        this(name, artist, uri, -1);
+        try {
+            //just to satify the compiler
+            Class.forName("javax.sound.sampled.AudioSystem");
+            var audio =  AudioSystem.getAudioFileFormat(new File(uri));
+            duration = audio.getFrameLength();
+        } catch (Throwable ignore) {}
     }
 
     @Override
@@ -38,13 +47,11 @@ public class LocalTrack implements ITrack{
 
     @Override
     public int getDuration() {
-        try {
-            //just to satify the compiler
-            Class.forName("javax.sound.sampled.AudioSystem");
-            var audio =  AudioSystem.getAudioFileFormat(new File(uri));
-            return audio.getFrameLength();
-        } catch (ClassNotFoundException | IOException | UnsupportedAudioFileException e) {
-            return -1;
-        }
+        return duration;
+    }
+
+    @Override
+    public InputStream getStream() {
+        return null;
     }
 }
