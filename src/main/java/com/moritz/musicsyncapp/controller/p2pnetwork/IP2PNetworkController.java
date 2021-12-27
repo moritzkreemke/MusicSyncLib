@@ -13,8 +13,8 @@ public interface IP2PNetworkController {
     void connectDevice(IDevice iDevice);
     void disconnect();
     void discoverDevices();
-    ISession getSession();
     IDevice[] getDevices();
+    boolean isOwner();
 
     void sendMessage (byte[] message, IClient reciver);
 

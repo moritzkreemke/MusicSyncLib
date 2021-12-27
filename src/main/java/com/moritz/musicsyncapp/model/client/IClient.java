@@ -6,6 +6,7 @@ public interface IClient {
 
     IClient ANY = new ClientImpl("ANY");
     IClient EVENT = new ClientImpl("EVENT");
+    IClient SERVER = new ClientImpl("SERVER");
 
     String getID();
 

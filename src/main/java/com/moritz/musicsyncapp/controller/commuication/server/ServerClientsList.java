@@ -14,7 +14,13 @@ public class ServerClientsList extends CopyOnWriteArrayList<IClient> {
     public IClient[] getClients (String id) {
         if(id.equals("ANY"))
             return toArray(new IClient[size()]);
-        return (IClient[]) stream().filter(client -> client.equals(id)).toArray();
+        //return (IClient[]) stream().filter(client -> client.equals(id)).toArray();
+        List<IClient> result = new ArrayList<>();
+        for(IClient client : this) {
+            if(client.getID().equals(id))
+                result.add(client);
+        }
+        return result.toArray(new IClient[result.size()]);
     }
 
 }

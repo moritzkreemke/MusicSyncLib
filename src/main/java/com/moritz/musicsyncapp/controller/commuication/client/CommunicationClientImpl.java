@@ -8,7 +8,11 @@ import com.moritz.musicsyncapp.model.client.IClient;
 import com.moritz.musicsyncapp.model.commuication.CommuicationFactory;
 import com.moritz.musicsyncapp.model.commuication.IMessage;
 import com.moritz.musicsyncapp.model.commuication.ISendableMessage;
+import com.moritz.musicsyncapp.model.commuication.events.EventMessage;
+import com.moritz.musicsyncapp.model.commuication.messages.AvailableClientsChanged;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -24,6 +28,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class CommunicationClientImpl implements ICommunicationClient {
     public static final String TAG = CommunicationClientImpl.class.toString();
     private static final int TIMEOUT = 500;
+
+    public static final String CONNECTED_CHANGED_ACTION = "connected";
+    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     private static AtomicBoolean connected = new AtomicBoolean(false);
     private Socket socket;
@@ -45,15 +52,16 @@ public class CommunicationClientImpl implements ICommunicationClient {
     }
 
 
-    public synchronized void connectInternal(InetAddress inetAddress, int port, int retires, String id, OnConnectEvent event) {
+    public void connectInternal(InetAddress inetAddress, int port, int retires, String id, OnConnectEvent event) {
 
         try {
-            if(connected.get()) {
-                Log.d(TAG, "already connected");
-                event.onFailure(2);
-                return;
+            synchronized (this) {
+                if(connected.get()) {
+                    Log.d(TAG, "already connected");
+                    event.onFailure(2);
+                    return;
+                }
             }
-
             socket = new Socket();
             socket.bind(null);
 
@@ -63,6 +71,7 @@ public class CommunicationClientImpl implements ICommunicationClient {
             client = new ClientImpl(id);
             inputStream = new DataInputStream(socket.getInputStream());
             outputStream = new DataOutputStream(socket.getOutputStream());
+            pcs.firePropertyChange(CONNECTED_CHANGED_ACTION, false, true);
             if(event != null)
                 event.success();
 
@@ -81,6 +90,10 @@ public class CommunicationClientImpl implements ICommunicationClient {
                                 } catch (Throwable ignore) {};
                             }
                         } catch (IOException e) {
+                            if(socket.isClosed()) {
+                                connected.set(false);
+                                Log.d(TAG, "run: disconnected");
+                            }
                             e.printStackTrace();
                         }
 
@@ -113,6 +126,7 @@ public class CommunicationClientImpl implements ICommunicationClient {
             Log.d(TAG, "input stream is null");
             return;
         }
+
         String jsonMessage = CommuicationFactory.createMessage(message, client, receiver).toJSON();
         try {
             outputStream.writeUTF(jsonMessage);
@@ -123,6 +137,7 @@ public class CommunicationClientImpl implements ICommunicationClient {
 
 
     }
+
 
     @Override
     public void addOnReviveMessageListener(OnReciveMessageEvent onReciveMessageEvent) {
@@ -137,5 +152,8 @@ public class CommunicationClientImpl implements ICommunicationClient {
         }
     }
 
-
+    @Override
+    public void addOnConnectedChangeListener(PropertyChangeListener listener) {
+        pcs.addPropertyChangeListener(CONNECTED_CHANGED_ACTION, listener);
+    }
 }

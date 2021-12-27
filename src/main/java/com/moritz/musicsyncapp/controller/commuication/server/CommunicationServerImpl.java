@@ -6,6 +6,11 @@ import com.moritz.musicsyncapp.model.commuication.IMessage;
 import com.moritz.musicsyncapp.model.commuication.ISendableMessage;
 import com.moritz.musicsyncapp.model.commuication.events.EventMessage;
 import com.moritz.musicsyncapp.model.commuication.messages.AvailableClientsChanged;
+import com.moritz.musicsyncapp.model.commuication.messages.PlaylistChangedMessage;
+import com.moritz.musicsyncapp.model.commuication.messages.RequestPlaylistMessage;
+import com.moritz.musicsyncapp.model.playlist.IPlaylist;
+import com.moritz.musicsyncapp.model.playlist.SessionClientPlaylistImpl;
+import com.moritz.musicsyncapp.model.playlist.SessionServerPlaylistImpl;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -19,6 +24,7 @@ public class CommunicationServerImpl implements ICommunicationServer {
 
     private static ServerSocket serverSocket;
     private static final ServerClientsList clientsList = new ServerClientsList();
+    private static IPlaylist playlist = new SessionServerPlaylistImpl();
 
 
     @Override
@@ -58,6 +64,9 @@ public class CommunicationServerImpl implements ICommunicationServer {
         if(sendableMessage.getReciver().getID().equals(IClient.EVENT.getID())) {
             evaulateEvents(sendableMessage);
             return;
+        } else if(sendableMessage.getReciver().getID().equals(IClient.SERVER.getID())) {
+            evaluateServerMessages(sendableMessage);
+            return;
         }
         IClient[] recipiends = clientsList.getClients(sendableMessage.getReciver().getID());
         for (int i = 0; i < recipiends.length; i++) {
@@ -73,6 +82,33 @@ public class CommunicationServerImpl implements ICommunicationServer {
                 case EventMessage.EVENT_CLIENTS_UPDATED_TYPE:
                     event_clients_update();
                     break;
+            }
+        }
+    }
+    private void evaluateServerMessages (ISendableMessage message)
+    {
+        if(message.getMessage() instanceof RequestPlaylistMessage) {
+            IClient[] clients = clientsList.getClients(message.getSender().getID());
+            for (int i = 0; i < clients.length; i++) {
+                ServerClient serverClient = (ServerClient) clients[i];
+                PlaylistChangedMessage messageAnswer = new PlaylistChangedMessage();
+                messageAnswer.setPlaylist(playlist);
+                ISendableMessage answer = CommuicationFactory.createMessage(messageAnswer, IClient.SERVER, message.getSender());
+                serverClient.sendMessage(answer);
+            }
+        } else if (message.getMessage() instanceof PlaylistChangedMessage) {
+            PlaylistChangedMessage playlistChangedMessage = (PlaylistChangedMessage) message.getMessage();
+            IPlaylist clientPlaylist = playlistChangedMessage.getPlaylist();
+            playlist = new SessionServerPlaylistImpl();
+            playlist.setTracks(clientPlaylist.getTracks(), false);
+
+            IClient[] clients = clientsList.getClients(IClient.ANY.getID());
+            for (int i = 0; i < clients.length; i++) {
+                ServerClient serverClient = (ServerClient) clients[i];
+                PlaylistChangedMessage messageAnswer = new PlaylistChangedMessage();
+                messageAnswer.setPlaylist(playlist);
+                ISendableMessage answer = CommuicationFactory.createMessage(messageAnswer, IClient.SERVER, message.getSender());
+                serverClient.sendMessage(answer);
             }
         }
     }

@@ -5,6 +5,7 @@ import com.moritz.musicsyncapp.controller.commuication.events.OnReciveMessageEve
 import com.moritz.musicsyncapp.model.client.IClient;
 import com.moritz.musicsyncapp.model.commuication.IMessage;
 
+import java.beans.PropertyChangeListener;
 import java.io.Closeable;
 import java.net.InetAddress;
 
@@ -17,5 +18,6 @@ public interface ICommunicationClient extends Closeable {
 
     void addOnReviveMessageListener(OnReciveMessageEvent onReciveMessageEvent);
 
+    void addOnConnectedChangeListener (PropertyChangeListener listener);
 
 }

@@ -1,31 +1,26 @@
 package com.moritz.musicsyncapp.model.playlist;
 
+import com.moritz.musicsyncapp.controller.commuication.client.ICommunicationClient;
 import com.moritz.musicsyncapp.model.track.ITrack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-class LocalPlaylistImpl implements IPlaylist {
+public class SessionServerPlaylistImpl implements IPlaylist {
 
-    private String provider;
-    private String name;
-    private List<ITrack> tracks;
 
-    public LocalPlaylistImpl(String provider, String name) {
-        this.provider = provider;
-        this.name = name;
-        this.tracks = new ArrayList<>();
-    }
+
+    private List<ITrack> tracks = new ArrayList<>();
+
 
     @Override
     public String getProvider() {
-        return provider;
+        return "network_server";
     }
 
     @Override
     public String getName() {
-        return name;
+        return "no name";
     }
 
     @Override

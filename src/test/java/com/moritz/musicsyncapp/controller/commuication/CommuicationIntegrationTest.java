@@ -1,5 +1,6 @@
 package com.moritz.musicsyncapp.controller.commuication;
 
+import com.moritz.musicsyncapp.MusicSyncFactory;
 import com.moritz.musicsyncapp.controller.commuication.client.ICommunicationClient;
 import com.moritz.musicsyncapp.controller.commuication.events.OnReciveMessageEvent;
 import com.moritz.musicsyncapp.controller.commuication.server.ICommunicationServer;
@@ -18,8 +19,8 @@ public class CommuicationIntegrationTest {
 
     @Test
     void createServerAndConnect ( ) throws UnknownHostException {
-        ICommunicationServer server = CommuicationFactory.get().getServer();
-        ICommunicationClient client = CommuicationFactory.get().getClient();
+        ICommunicationServer server = null;
+        ICommunicationClient client = null;
 
         int port = 8080;
 
