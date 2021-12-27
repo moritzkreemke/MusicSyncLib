@@ -7,8 +7,8 @@ import com.moritz.musicsyncapp.model.track.ITrack;
 public interface ISession {
 
     IClient[] getClients();
-    String getName();
-    IClient getOwner ();
+    boolean exits();
+    boolean isOwner();
     IPlaylist getSessionPlaylist();
     void playTrack (ITrack track);
 

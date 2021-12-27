@@ -2,8 +2,9 @@ package com.moritz.musicsyncapp.controller.p2pnetwork.events;
 
 import com.moritz.musicsyncapp.model.client.IClient;
 
-public interface P2PNetworkControllerClientConnectedEvent {
+public interface P2PNetworkControllerConnectingEvent {
 
-    void onClientConnected (IClient client);
+    void onSuccessfulConnected ();
+    void onFailure (int i);
 
 }

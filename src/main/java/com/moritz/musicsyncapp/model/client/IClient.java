@@ -4,7 +4,9 @@ import com.moritz.musicsyncapp.model.device.IDevice;
 
 public interface IClient {
 
-    String getAddress();
-    IDevice getDevice();
+    IClient ANY = new ClientImpl("ANY");
+    IClient EVENT = new ClientImpl("EVENT");
+
+    String getID();
 
 }

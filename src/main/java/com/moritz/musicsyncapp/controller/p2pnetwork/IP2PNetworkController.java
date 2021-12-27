@@ -1,20 +1,20 @@
 package com.moritz.musicsyncapp.controller.p2pnetwork;
 
-import com.moritz.musicsyncapp.controller.p2pnetwork.events.IP2PNetworkControllerDevicesFoundChangedEvent;
-import com.moritz.musicsyncapp.controller.p2pnetwork.events.P2PNetworkControllerClientConnectedEvent;
+
 import com.moritz.musicsyncapp.model.client.IClient;
 import com.moritz.musicsyncapp.model.device.IDevice;
+import com.moritz.musicsyncapp.model.session.ISession;
 
 
 public interface IP2PNetworkController {
 
 
-    void addOnDevicesFoundChangeListener(IP2PNetworkControllerDevicesFoundChangedEvent event);
-    void addOnClientConnectedListener(P2PNetworkControllerClientConnectedEvent event);
+
+    void connectDevice(IDevice iDevice);
+    void disconnect();
     void discoverDevices();
-    IClient connectDevice(IDevice device);
-
-
+    ISession getSession();
+    IDevice[] getDevices();
 
     void sendMessage (byte[] message, IClient reciver);
 
