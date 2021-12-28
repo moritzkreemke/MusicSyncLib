@@ -5,6 +5,8 @@ import com.moritz.musicsyncapp.controller.commuication.server.ICommunicationServ
 import com.moritz.musicsyncapp.controller.p2pnetwork.IP2PNetworkController;
 import com.moritz.musicsyncapp.controller.playlist.IPlaylistController;
 import com.moritz.musicsyncapp.controller.session.ISessionController;
+import com.moritz.musicsyncapp.controller.snapdroid.ISnapdroidClient;
+import com.moritz.musicsyncapp.controller.snapdroid.ISnapdroidServer;
 import com.moritz.musicsyncapp.controller.sound.ISoundController;
 
 public interface ISyncFactory {
@@ -15,6 +17,8 @@ public interface ISyncFactory {
     ISessionController getSessionController ();
     ICommunicationClient getCommuicationClient ();
     ICommunicationServer getCommuicationServer();
+    ISnapdroidServer getSnapdroidServer ();
+    ISnapdroidClient getSnapdroidClient();
 
 
 }

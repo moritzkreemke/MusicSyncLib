@@ -9,6 +9,8 @@ import com.moritz.musicsyncapp.controller.playlist.IPlaylistController;
 import com.moritz.musicsyncapp.controller.playlist.PlaylistControllerImpl;
 import com.moritz.musicsyncapp.controller.session.ISessionController;
 import com.moritz.musicsyncapp.controller.session.SessionControllerImpl;
+import com.moritz.musicsyncapp.controller.snapdroid.ISnapdroidClient;
+import com.moritz.musicsyncapp.controller.snapdroid.ISnapdroidServer;
 import com.moritz.musicsyncapp.controller.sound.ISoundController;
 
 
@@ -64,5 +66,15 @@ public class MusicSyncFactory implements ISyncFactory {
         if(communicationServer == null)
             communicationServer = new CommunicationServerImpl();
         return communicationServer;
+    }
+
+    @Override
+    public ISnapdroidServer getSnapdroidServer() {
+        return null;
+    }
+
+    @Override
+    public ISnapdroidClient getSnapdroidClient() {
+        return null;
     }
 }
